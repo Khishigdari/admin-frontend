@@ -1,10 +1,9 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
-import { Header } from "@/components/layout/Header";
-import { SideBar } from "@/components/layout/SideBar";
+
 import { AddDishComp } from "@/components/products";
 import React from "react";
 
-const page = () => {
+const ProductsPage = () => {
   return (
     <div className="bg-gray-100 max-w-full h-screen inter">
       <AdminLayout>
@@ -23,4 +22,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ProductsPage;
