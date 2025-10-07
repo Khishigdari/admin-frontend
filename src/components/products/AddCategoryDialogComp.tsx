@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +15,21 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 
 export const AddCategoryDialogComp = () => {
+  const [newCategory, setNewCategory] = useState<string[]>([]);
+
+  const createNewCategory = async () => {
+    if (newCategory) {
+      await fetch("http://localhost:4000/category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newCategory }),
+      });
+      // loadTasks();
+      setNewCategory([]);
+    }
+  };
   return (
     <div>
       <Dialog>
@@ -35,7 +51,11 @@ export const AddCategoryDialogComp = () => {
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button className="w-fit mt-6 leading-5" type="submit">
+              <Button
+                className="w-fit mt-6 leading-5"
+                type="submit"
+                onClick={createNewCategory}
+              >
                 Add category
               </Button>
             </DialogClose>
