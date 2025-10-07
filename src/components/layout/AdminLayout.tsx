@@ -4,9 +4,9 @@ import { Header } from "./Header";
 
 export const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex pr-10 w-full relative">
+    <div className="flex size-fit">
       <SideBar />
-      <div className="absolute right-0 mr-10">
+      <div className="pl-6 ">
         <Header />
         {children}
       </div>
