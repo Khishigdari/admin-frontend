@@ -7,18 +7,18 @@ export const AddCategoryComp = () => {
   // const categories = ["All Dishes", "Appetizers", "Salads", "Pizzas"];
   const [categories, setCategories] = useState<string[]>([]);
 
-  const getCategories = async () => {
-    const result = await fetch("http://localhost:4000/categories", {
-      method: "GET",
-    });
-    const responseData = await result.json();
-    const { data } = responseData;
-    setCategories(data);
-    console.log(data, "data");
-  };
-  useEffect(() => {
-    getCategories();
-  }, []);
+  // const getCategories = async () => {
+  //   const result = await fetch("http://localhost:4000/categories", {
+  //     method: "GET",
+  //   });
+  //   const responseData = await result.json();
+  //   const { data } = responseData;
+  //   setCategories(data);
+  //   console.log(data, "data");
+  // };
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
 
   return (
     <div className="mb-6 w-293 p-6 rounded-lg bg-white">
