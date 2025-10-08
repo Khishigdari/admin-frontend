@@ -10,10 +10,12 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 export const AddDishComp = () => {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
+  const [ingredients, setIngredients] = useState<string>("");
   const [image, setImage] = useState<File>();
 
   const addFoodHandler = () => {
@@ -24,7 +26,7 @@ export const AddDishComp = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ price, name, image }),
+      body: JSON.stringify({ price, name, ingredients, image }),
     });
     // console.log();
   };
@@ -35,11 +37,15 @@ export const AddDishComp = () => {
   const priceChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(e.target.value));
   };
+  const ingredientsChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setIngredients(e.target.value);
+  };
   const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
     }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -94,10 +100,14 @@ export const AddDishComp = () => {
             <legend className="fieldset-legend text-[14px] leading-[14px] font-[500]">
               Ingredients
             </legend>
-            <textarea
+            <Textarea
+              id="ingredients"
+              name="ingredients"
+              defaultValue={ingredients}
               // type="text"
               className="textarea border border-[#E4E4E7] w-[412px] rounded-[6px]"
               placeholder="List ingredients..."
+              onChange={ingredientsChangeHandler}
             />
           </fieldset>
         </div>

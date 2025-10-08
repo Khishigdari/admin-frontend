@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,19 +15,28 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 
 export const AddCategoryDialogComp = () => {
-  const [newCategory, setNewCategory] = useState<string[]>([]);
+  // const [newCategory, setNewCategory] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState<string>("");
 
   const createNewCategory = async () => {
-    if (newCategory) {
-      await fetch("http://localhost:4000/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newCategory }),
-      });
-      // loadTasks();
-      setNewCategory([]);
+    await fetch("http://localhost:4000/category", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newCategory }),
+    });
+    setNewCategory("");
+  };
+  // const categoryChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   // console.log(e);
+  //   setNewCategory(e.target.value);
+  // };
+  const handleKeyboardEvent = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      createNewCategory();
     }
   };
   return (
@@ -35,7 +44,6 @@ export const AddCategoryDialogComp = () => {
       <Dialog>
         <DialogTrigger asChild>
           <Badge className="py-2 px-4 rounded-full bg-[#EF4444] cursor-pointer">
-            {/* <Plus className="w-2.5 h-2.5" /> */}
             <p className="text-[14px] leading-5">+</p>
           </Badge>
         </DialogTrigger>
@@ -47,7 +55,15 @@ export const AddCategoryDialogComp = () => {
             <Label className="mb-2 text-[14px] leading-[14px] font-medium">
               Category name
             </Label>
-            <Input placeholder="Type category name..." />
+            <Input
+              id="newCategory"
+              name="newCategory"
+              defaultValue={newCategory}
+              placeholder="Type category name..."
+              onKeyDown={handleKeyboardEvent}
+              // onChange={categoryChangeHandler}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
