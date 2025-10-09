@@ -11,6 +11,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
+import Image from "next/image";
+// import { addFoodHandler } from "../_utils/add-food-util";
 
 export const AddDishComp = () => {
   const [name, setName] = useState<string>("");
@@ -18,6 +20,7 @@ export const AddDishComp = () => {
   const [ingredients, setIngredients] = useState<string>("");
   const [image, setImage] = useState<File | undefined>();
   const [category, setCategory] = useState<string>("");
+  const [preview, setPreview] = useState<string>();
 
   // const addFoodHandler = () => {
   //   // console.log({ name });
@@ -32,6 +35,7 @@ export const AddDishComp = () => {
   //   // console.log();
   // };
 
+  //add-food-utils==========
   const addFoodHandler = async () => {
     if (!name || !price || !image || !ingredients || !category) {
       alert("All fields are required");
@@ -39,14 +43,14 @@ export const AddDishComp = () => {
     }
 
     const form = new FormData();
-    form.append("foodName", name);
+    form.append("name", name);
     form.append("price", String(price));
-    form.append("asd", image); //File object
+    form.append("image", image); //File object (can be asd inside the "")
     form.append("ingredients", ingredients);
     form.append("category", category);
 
     try {
-      const response = await fetch("http://localhost:4000/create-food", {
+      const response = await fetch("http://localhost:4000/api/foods", {
         method: "POST",
         body: form,
       });
@@ -66,6 +70,9 @@ export const AddDishComp = () => {
       alert("Failed to create food!");
     }
   };
+  //==========
+
+  // addFoodHandler(name, price, image, ingredients, category)
 
   const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     // console.log(e);
@@ -80,11 +87,20 @@ export const AddDishComp = () => {
   const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
+      const filePreview = URL.createObjectURL(e.target.files[0]);
+      setPreview(filePreview);
+      console.log(preview);
     }
   };
   const categoryChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
   };
+
+  // function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
+  //   const file = e.target.files[0];
+  //   const filePreview = URL.createObjectURL(file);
+  //   setPreview(filePreview);
+  // }
 
   return (
     <Dialog>
@@ -157,6 +173,19 @@ export const AddDishComp = () => {
             >
               picture
             </Label>
+            {preview && (
+              <img
+                src={preview}
+                alt=""
+                // width={100}
+                // height={50}
+                className="absolute inset-0 h-full w-full object-cover rounded-[6px]"
+              />
+              // <button className="absolute right-3 top-0 text-gray-300 hover:text-white" onClick={setPreview("")}>
+              //   x
+              // </button>
+              // <Button className="text-red-500 z-30">x</Button>
+            )}
             <Input
               id="picture"
               type="file"
