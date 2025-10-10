@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
+// import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -78,7 +78,7 @@ export const AddCategoryComp = () => {
           <Badge
             variant="outline"
             key={id}
-            className="w-fit px-4 py-2 rounded-full gap-3 text-[14px] leading-5 font-medium"
+            className="w-fit px-4 py-2 rounded-full gap-3 text-[14px] leading-5 font-medium active:border-red-500"
           >
             {category}
             <X
@@ -93,9 +93,10 @@ export const AddCategoryComp = () => {
             <Badge
               onClick={() => setModalOpen(true)}
               variant={"outline"}
-              className="py-2 px-4 rounded-full bg-[#EF4444] cursor-pointer"
+              className="py-2 px-4 rounded-full w-9 h-9 bg-[#EF4444] cursor-pointer"
             >
-              <p className="text-[14px] leading-5">+</p>
+              {/* <Plus className="text-white h-4" /> */}
+              <p className="text-[14px] leading-5 text-white">+</p>
             </Badge>
           </DialogTrigger>
           <DialogContent className="w-[460px] p-6">
@@ -119,15 +120,18 @@ export const AddCategoryComp = () => {
               />
             </DialogHeader>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  className="w-fit mt-6 leading-5"
-                  type="submit"
-                  onClick={createCategoryHandler}
-                >
-                  Add category
+              {/* <DialogClose asChild>
+                <Button variant="secondary" className="rounded-full">
+                  <X />
                 </Button>
-              </DialogClose>
+              </DialogClose> */}
+              <Button
+                className="w-fit mt-6 leading-5"
+                type="submit"
+                onClick={createCategoryHandler}
+              >
+                Add category
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
