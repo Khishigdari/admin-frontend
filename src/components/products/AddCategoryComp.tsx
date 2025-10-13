@@ -17,10 +17,13 @@ import { Button } from "../ui/button";
 import { X } from "lucide-react";
 
 export const AddCategoryComp = () => {
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
+    []
+  );
   const [newCategory, setNewCategory] = useState<string>("");
   // const [newCategories, setNewCategories] = useState<string | undefined>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  // const [inputCategory, setInputCategory] = useState<string>();
 
   const getCategories = async () => {
     const result = await fetch("http://localhost:4000/api/categories");
@@ -48,18 +51,22 @@ export const AddCategoryComp = () => {
       body: JSON.stringify({ newCategory }),
     });
     setModalOpen(false);
+
     await getCategories();
+    // setInputCategory("");
   };
 
-  const deleteCategoryHandler = async (categories: string) => {
+  const deleteCategoryHandler = async (categoryId: string) => {
+    console.log("delete called");
     await fetch("http://localhost:4000/api/categories/delete", {
       method: "POST",
       mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(categories),
+      body: JSON.stringify({ categoryId }),
     });
+    await getCategories();
   };
 
   const handleKeyboardEvent = (
@@ -75,17 +82,16 @@ export const AddCategoryComp = () => {
       <h4 className="text-5 leading-7 font-semibold mb-4">Dishes Category</h4>
       <div className="flex gap-3">
         {categories.map((category, id) => (
-          <Badge
-            variant="outline"
+          <div
             key={id}
-            className="w-fit px-4 py-2 rounded-full gap-3 text-[14px] leading-5 font-medium active:border-red-500"
+            className=" border-2 rounded-full w-fit px-4 py-1 flex items-center gap-3 text-[14px] leading-5 font-medium active:border-red-500"
           >
-            {category}
+            {category.name}
             <X
-              className="hover:bg-red-500"
-              onClick={() => deleteCategoryHandler(category)}
+              className="hover:text-red-500 w-4 h-4"
+              onClick={() => deleteCategoryHandler(category._id)}
             />
-          </Badge>
+          </div>
         ))}
         {/* <AddCategoryDialogComp /> */}
         <Dialog open={modalOpen}>
