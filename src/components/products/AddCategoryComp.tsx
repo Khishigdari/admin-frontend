@@ -94,10 +94,9 @@ export const AddCategoryComp = () => {
           </div>
         ))}
         {/* <AddCategoryDialogComp /> */}
-        <Dialog open={modalOpen}>
+        <Dialog>
           <DialogTrigger asChild>
             <Badge
-              onClick={() => setModalOpen(true)}
               variant={"outline"}
               className="py-2 px-4 rounded-full w-9 h-9 bg-[#EF4444] cursor-pointer"
             >

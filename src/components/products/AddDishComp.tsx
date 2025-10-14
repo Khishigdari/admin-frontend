@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
+import { AddFoodCardsComp } from "./DishCardsComp";
 // import { addFoodHandler } from "../_utils/add-food-util";
 
 export const AddDishComp = () => {
@@ -103,120 +104,124 @@ export const AddDishComp = () => {
   // }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <p className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]">
-          +
-        </p>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[460px]">
-        <DialogHeader>
-          <DialogTitle className="mb-5 text-[18px] leading-7 font-[600]">
-            Add new Dish to Appetizers
-          </DialogTitle>
-        </DialogHeader>
-        <div className=" gap-6 flex">
-          <div className="grid gap-3">
-            <Label className=" text-[14px] leading-[14px] font-[500]">
-              Food name
-            </Label>
-            <Input
-              id="name"
-              name="name"
-              defaultValue={name}
-              // value={name}
-              onChange={nameChangeHandler}
-              // type="text"
-              className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
-              placeholder="Type food name"
-            />
-          </div>
-          <div className="grid gap-3">
-            <Label className=" text-[14px] leading-[14px] font-[500]">
-              Food price
-            </Label>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              defaultValue={""}
-              // value={price}
-              onChange={priceChangeHandler}
-              className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
-              placeholder="Enter price..."
-            />
-          </div>
-        </div>
-        <div className="grid gap-3">
-          <Label className=" text-[14px] leading-[14px] font-[500]">
-            Ingredients
-          </Label>
-          <Textarea
-            id="ingredients"
-            name="ingredients"
-            defaultValue={ingredients}
-            // type="text"
-            className="textarea border border-[#E4E4E7] w-[412px] rounded-[6px]"
-            placeholder="List ingredients..."
-            onChange={ingredientsChangeHandler}
-          />
-        </div>
-        <div className="grid gap-3">
-          <legend className=" text-[14px] leading-[14px] font-[500]">
-            Food image
-          </legend>
-          <div className="border border-dashed border-[#2563EB33] bg-[#2563EB0D] pb-[39px] rounded-[6px] flex flex-col items-center justify-center relative gap-2">
-            {/* <div className="grid w-full max-w-sm items-center gap-3 absolute inset-0 opacity-0"> */}
-            <Label
-              htmlFor="picture"
-              className="grid w-full max-w-sm items-center gap-3 absolute inset-0 opacity-0"
-            >
-              picture
-            </Label>
-            {preview && (
-              <img
-                src={preview}
-                alt=""
-                // width={100}
-                // height={50}
-                className="absolute inset-0 h-full w-full object-cover rounded-[6px]"
+    <div>
+      <Dialog>
+        <DialogTrigger asChild>
+          <p className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]">
+            +
+          </p>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[460px]">
+          <DialogHeader>
+            <DialogTitle className="mb-5 text-[18px] leading-7 font-[600]">
+              Add new Dish to Appetizers
+            </DialogTitle>
+          </DialogHeader>
+          <div className=" gap-6 flex">
+            <div className="grid gap-3">
+              <Label className=" text-[14px] leading-[14px] font-[500]">
+                Food name
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                defaultValue={name}
+                // value={name}
+                onChange={nameChangeHandler}
+                // type="text"
+                className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
+                placeholder="Type food name"
               />
-              // <button className="absolute right-3 top-0 text-gray-300 hover:text-white" onClick={setPreview("")}>
-              //   x
-              // </button>
-              // <Button className="text-red-500 z-30">x</Button>
-            )}
-            <Input
-              id="picture"
-              type="file"
-              onChange={fileChangeHandler}
-              className="opacity-0"
-            />
-            {/* </div> */}
-            <img src="./image.svg" />
-            <p className="text-[14px] leading-5 font-medium">
-              Choose a file or drag & drop it here
-            </p>
+            </div>
+            <div className="grid gap-3">
+              <Label className=" text-[14px] leading-[14px] font-[500]">
+                Food price
+              </Label>
+              <Input
+                id="price"
+                name="price"
+                type="number"
+                defaultValue={""}
+                // value={price}
+                onChange={priceChangeHandler}
+                className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
+                placeholder="Enter price..."
+              />
+            </div>
           </div>
-        </div>
-        <div className="grid gap-3">
-          <Label htmlFor="category">Category</Label>
-          <Input
-            id="category"
-            name="category"
-            value={category}
-            onChange={categoryChangeHandler}
-          />
-        </div>
-        <div className="flex justify-end">
-          <Button
-            className="btn btn-neutral mt-8 w-fit py-2 px-4 text-[14px] leading-5 font-medium rounded-[6px]"
-            onClick={addFoodHandler}
-          >
-            Add Dish
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="grid gap-3">
+            <Label className=" text-[14px] leading-[14px] font-[500]">
+              Ingredients
+            </Label>
+            <Textarea
+              id="ingredients"
+              name="ingredients"
+              defaultValue={ingredients}
+              // type="text"
+              className="textarea border border-[#E4E4E7] w-[412px] rounded-[6px]"
+              placeholder="List ingredients..."
+              onChange={ingredientsChangeHandler}
+            />
+          </div>
+          <div className="grid gap-3">
+            <legend className=" text-[14px] leading-[14px] font-[500]">
+              Food image
+            </legend>
+            <div className="border border-dashed border-[#2563EB33] bg-[#2563EB0D] pb-[39px] rounded-[6px] flex flex-col items-center justify-center relative gap-2">
+              {/* <div className="grid w-full max-w-sm items-center gap-3 absolute inset-0 opacity-0"> */}
+              <Label
+                htmlFor="picture"
+                className="grid w-full max-w-sm items-center gap-3 absolute inset-0 opacity-0"
+              >
+                picture
+              </Label>
+              {preview && (
+                <img
+                  src={preview}
+                  alt=""
+                  // width={100}
+                  // height={50}
+                  className="absolute inset-0 h-full w-full object-cover rounded-[6px]"
+                />
+                // <button className="absolute right-3 top-0 text-gray-300 hover:text-white" onClick={setPreview("")}>
+                //   x
+                // </button>
+                // <Button className="text-red-500 z-30">x</Button>
+              )}
+              <Input
+                id="picture"
+                type="file"
+                onChange={fileChangeHandler}
+                className="opacity-0"
+              />
+              {/* </div> */}
+              <img src="./image.svg" />
+              <p className="text-[14px] leading-5 font-medium">
+                Choose a file or drag & drop it here
+              </p>
+            </div>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="category">Category</Label>
+            <Input
+              id="category"
+              name="category"
+              value={category}
+              onChange={categoryChangeHandler}
+            />
+          </div>
+          <div className="flex justify-end">
+            <Button
+              className="btn btn-neutral mt-8 w-fit py-2 px-4 text-[14px] leading-5 font-medium rounded-[6px]"
+              onClick={addFoodHandler}
+            >
+              Add Dish
+              {/* <AddFoodCardsComp /> */}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* <AddDishComp name={name} price={price} image={image} ingredients={ingredients} category={category}/> */}
+    </div>
   );
 };
