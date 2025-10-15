@@ -1,8 +1,7 @@
 "use client";
 import { Foodtype } from "@/app/products/page";
-import { Pen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import EditDishDialog from "./EditDishDialog";
 
 export const AddFoodCardsComp = () => {
   const [foods, setFoods] = useState<Foodtype[]>([]);
@@ -19,23 +18,8 @@ export const AddFoodCardsComp = () => {
     getFoods();
   }, []);
 
-  const editFoods = async () => {
-    const result = await fetch("http://localhost:4000/api/foods", {
-      method: "PUT",
-      // mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ foods }),
-    });
-    setFoods(foods);
-  };
-  // console.log(editFoods, "clicked");
-
   return (
-    // <div>
     <div className="flex flex-wrap gap-4">
-      {/* </div> */}
       {foods?.map((food) => (
         <div
           key={food._id}
@@ -44,25 +28,12 @@ export const AddFoodCardsComp = () => {
           <div className="w-full h-[129px] rounded-xl  overflow-hidden relative">
             {food.image ? (
               <div>
-                <img
-                  src={food.image}
-                  alt=""
-                  // width={270.75}
-                  // height={129}
-                  // objectFit="cover"
-                  // unoptimized
-                  className="bg-gray-200"
-                />
+                <img src={food.image} alt="" className="bg-gray-200" />
               </div>
             ) : (
               ""
             )}
-            <Button
-              onClick={editFoods}
-              className="bg-white rounded-full absolute bottom-5 right-5"
-            >
-              <Pen className="text-red-500"></Pen>
-            </Button>
+            <EditDishDialog getFoods={getFoods()} />
           </div>
 
           <div className="flex flex-col gap-2">
