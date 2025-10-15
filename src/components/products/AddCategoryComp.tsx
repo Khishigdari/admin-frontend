@@ -15,15 +15,12 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { CategoryType } from "@/app/products/page";
 
 export const AddCategoryComp = () => {
-  const [categories, setCategories] = useState<{ name: string; _id: string }[]>(
-    []
-  );
-  const [newCategory, setNewCategory] = useState<string>("");
-  // const [newCategories, setNewCategories] = useState<string | undefined>();
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [newCategory, setNewCategory] = useState<string | undefined>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  // const [inputCategory, setInputCategory] = useState<string>();
 
   const getCategories = async () => {
     const result = await fetch("http://localhost:4000/api/categories");
