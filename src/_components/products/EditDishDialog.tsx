@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pen, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/_components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -20,13 +20,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { CategoryType, Foodtype } from "@/app/products/page";
+import { CategoryType, Foodtype } from "@/lib/types";
 
 const EditDishDialog = () => {
   const [preview, setPreview] = useState<string>();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [foods, setFoods] = useState<Foodtype[]>([]);
+
+  const getFoods = async () => {
+    const result = await fetch("http://localhost:4000/api/foods");
+    const responseData = await result.json();
+    const { foods } = responseData;
+    setFoods(foods);
+    console.log(foods, "data");
+    console.log(responseData);
+  };
+  useEffect(() => {
+    getFoods();
+  }, []);
 
   const editFoods = async () => {
     const result = await fetch("http://localhost:4000/api/foods", {
@@ -37,19 +49,20 @@ const EditDishDialog = () => {
       },
       body: JSON.stringify({ foods }),
     });
+    console.log(foods, "selectedFood");
     setFoods(foods);
   };
 
-  const deleteFoodHandler = async (categoryId: string) => {
+  const deleteFoodHandler = async (_id: Foodtype[]) => {
     await fetch("http://localhost:4000/api/foods/delete", {
       method: "POST",
       mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ categoryId }),
+      body: JSON.stringify({ _id }),
     });
-    await setFoods();
+    await getFoods();
   };
   return (
     <div>
@@ -169,7 +182,7 @@ const EditDishDialog = () => {
               >
                 <Trash
                   className="text-red-500 w-3 h-[13px]"
-                  onClick={() => deleteFoodHandler()}
+                  onClick={() => deleteFoodHandler(foods._id)}
                 ></Trash>
               </Button>
             </div>

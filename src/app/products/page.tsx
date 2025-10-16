@@ -1,25 +1,11 @@
-import { AdminLayout } from "@/components/layout/AdminLayout";
+import { AdminLayout } from "@/_components/layout/AdminLayout";
 
 import {
   AddCategoryComp,
   AddDishComp,
   AddFoodCardsComp,
-} from "@/components/products";
-import { Button } from "@/components/ui/button";
-
-export type CategoryType = {
-  name: string;
-  _id: string;
-};
-
-export type Foodtype = {
-  name: string;
-  _id: string;
-  price: number;
-  ingredients: string;
-  image: string;
-  categoryId: string;
-};
+} from "@/_components/products";
+import { Button } from "@/_components/ui/button";
 
 const ProductsPage = () => {
   return (

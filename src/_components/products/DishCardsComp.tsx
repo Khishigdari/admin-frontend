@@ -1,7 +1,7 @@
 "use client";
-import { Foodtype } from "@/app/products/page";
 import { useEffect, useState } from "react";
 import EditDishDialog from "./EditDishDialog";
+import { Foodtype } from "@/lib/types";
 
 export const AddFoodCardsComp = () => {
   const [foods, setFoods] = useState<Foodtype[]>([]);
@@ -33,7 +33,9 @@ export const AddFoodCardsComp = () => {
             ) : (
               ""
             )}
-            <EditDishDialog getFoods={getFoods()} />
+            <EditDishDialog />
+            {/* <EditDishDialog {...getFoods}/> */}
+            {/* getFoods={getFoods()}  */}
           </div>
 
           <div className="flex flex-col gap-2">

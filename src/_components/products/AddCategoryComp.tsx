@@ -9,13 +9,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/_components/ui/dialog";
 // import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
-import { CategoryType } from "@/app/products/page";
+import { CategoryType } from "@/lib/types";
 
 export const AddCategoryComp = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);

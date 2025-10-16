@@ -1,46 +1,33 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/_components/ui/dialog";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { CategoryType } from "@/app/products/page";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
-export const AddDishComp = () => {
+export const AddDishComp = ({
+  categoryId,
+  refetchFoods,
+}: {
+  categoryId: string;
+  refetchFoods: () => Promise<void>;
+}) => {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [ingredients, setIngredients] = useState<string>("");
   const [image, setImage] = useState<File | undefined>();
   const [preview, setPreview] = useState<string>();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-
-  const getCategories = async () => {
-    const response = await fetch("http://localhost:4000/api/categories");
-    const data = await response.json();
-    setCategories(data.data);
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
+  const [open, setOpen] = useState<boolean>(closed);
 
   const addFoodHandler = async () => {
-    if (!name || !price || !image || !ingredients || !selectedCategory) {
+    if (!name || !price || !image || !ingredients) {
       alert("All fields are required");
       return;
     }
@@ -50,7 +37,7 @@ export const AddDishComp = () => {
     form.append("price", String(price));
     form.append("image", image); //File object (can be asd inside the "")
     form.append("ingredients", ingredients);
-    form.append("categoryId", selectedCategory);
+    form.append("categoryId", categoryId);
 
     try {
       const response = await fetch("http://localhost:4000/api/foods", {
@@ -60,12 +47,12 @@ export const AddDishComp = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Food created successfully!");
+        await refetchFoods();
+        setOpen(false);
         setName("");
         setPrice(0);
         setImage(undefined);
         setIngredients("");
-        setSelectedCategory(null);
       } else {
         alert(data.error || "Failed to create food!");
       }
@@ -95,9 +82,14 @@ export const AddDishComp = () => {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <p className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]">
+          <p
+            onClick={() => {
+              setOpen(true);
+            }}
+            className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]"
+          >
             +
           </p>
         </DialogTrigger>
@@ -115,7 +107,6 @@ export const AddDishComp = () => {
               <Input
                 id="name"
                 name="name"
-                defaultValue={name}
                 onChange={nameChangeHandler}
                 className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
                 placeholder="Type food name"
@@ -129,7 +120,6 @@ export const AddDishComp = () => {
                 id="price"
                 name="price"
                 type="number"
-                defaultValue={""}
                 onChange={priceChangeHandler}
                 className="input border border-[#E4E4E7] w-[194px] rounded-[6px]"
                 placeholder="Enter price..."
@@ -179,22 +169,6 @@ export const AddDishComp = () => {
               </p>
             </div>
           </div>
-          {categories.length > 0 && (
-            <Select onValueChange={(value) => setSelectedCategory(value)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => {
-                  return (
-                    <SelectItem key={category._id} value={category._id}>
-                      {category.name}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          )}
           <div className="flex justify-end">
             <Button
               className="btn btn-neutral mt-8 w-fit py-2 px-4 text-[14px] leading-5 font-medium rounded-[6px]"
