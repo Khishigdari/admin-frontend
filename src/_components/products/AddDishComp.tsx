@@ -11,13 +11,16 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
+import { CategoryType } from "@/lib/types";
 
 export const AddDishComp = ({
   categoryId,
   refetchFoods,
+  category,
 }: {
   categoryId: string;
   refetchFoods: () => Promise<void>;
+  category: CategoryType;
 }) => {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
@@ -84,14 +87,24 @@ export const AddDishComp = ({
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <p
-            onClick={() => {
-              setOpen(true);
-            }}
-            className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]"
-          >
-            +
-          </p>
+          <div>
+            <Button
+              variant="outline"
+              className="border border-dashed rounded-[20px] border-[#EF4444] w-67.5 h-60 py-2 px-4 flex flex-col gap-6 justify-center items-center"
+            >
+              <p
+                onClick={() => {
+                  setOpen(true);
+                }}
+                className="btn h-10 w-10 bg-[#EF4444] rounded-full text-[#FAFAFA]"
+              >
+                +
+              </p>
+              <p className="text-[#18181B] text-[14px] leading-5 font-[500]">
+                Add new Dish to {category.name}
+              </p>
+            </Button>
+          </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[460px]">
           <DialogHeader>
