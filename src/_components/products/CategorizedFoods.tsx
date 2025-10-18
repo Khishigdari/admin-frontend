@@ -17,7 +17,9 @@ export const CategorizedFoods = ({
   );
   return (
     <div className="p-4 rounded-lg bg-white mb-5">
-      <h4 className="text-5 leading-7 font-semibold mb-4">{category.name}</h4>
+      <h4 className="text-5 leading-7 font-semibold mb-4 flex gap-2">
+        {category.name} <p>({foods.length})</p>
+      </h4>
 
       <div className="flex flex-wrap gap-5">
         <AddDishComp
