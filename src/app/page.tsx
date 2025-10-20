@@ -93,11 +93,11 @@ const Home = () => {
     <div className="bg-secondary w-full h-full inter">
       <AdminLayout>
         <div>
-          <div className="mb-6 w-293 p-6 rounded-lg bg-white">
+          <div className="mb-6  p-6 rounded-lg bg-white">
             <h4 className="text-5 leading-7 font-semibold mb-4">
               Dishes Category
             </h4>
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               {categories.map((category, id) => (
                 <div
                   key={id}
