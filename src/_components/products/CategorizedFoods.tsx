@@ -1,5 +1,6 @@
 import { CategoryType, Foodtype } from "@/lib/types";
 import { AddDishComp } from "./AddDishComp";
+import EditDishDialog from "./EditDishDialog";
 // import EditDishDialog from "./EditDishDialog";
 
 export const CategorizedFoods = ({
@@ -27,9 +28,7 @@ export const CategorizedFoods = ({
           refetchFoods={refetchFoods}
           category={category}
         />
-        {/* {foods.map((food: Foodtype) => (
-          <div key={food._id}>
-            <div className="flex flex-wrap gap-4"> */}
+
         {foods?.map((food) => (
           <div
             key={food._id}
@@ -43,9 +42,11 @@ export const CategorizedFoods = ({
               ) : (
                 ""
               )}
-              {/* <EditDishDialog /> */}
-              {/* <EditDishDialog {...getFoods}/> */}
-              {/* getFoods={getFoods()}  */}
+              <EditDishDialog
+              // food={food}
+              // category={category}
+              // refetchFoods={refetchFoods}
+              />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -63,9 +64,6 @@ export const CategorizedFoods = ({
             </div>
           </div>
         ))}
-        {/* </div>
-          </div>
-        ))} */}
       </div>
     </div>
   );

@@ -1,94 +1,53 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { Badge } from "@/_components/ui/badge";
-// import { AddCategoryDialogComp } from "./AddCategoryDialogComp";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/_components/ui/dialog";
-// import { DialogClose } from "@radix-ui/react-dialog";
-
-import { X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { CategoryType, Foodtype } from "@/lib/types";
 import { AdminLayout } from "@/_components/layout/AdminLayout";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "@/_components/ui/input";
-import { Button } from "@/_components/ui/button";
 import { CategorizedFoods } from "@/_components/products";
+import Categories from "@/_components/products/Categories";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Home = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [newCategory, setNewCategory] = useState<string | undefined>();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [foods, setFoods] = useState<Foodtype[]>([]);
+  const [categoryLoading, setCategoryLoading] = useState<boolean>(false);
+  const [foodLoading, setFoodLoading] = useState<boolean>(false);
+
+  // const route = useRouter();
+  // const email = localStorage.getItem("userEmail");
+  // if (!email) {
+  //   route.push("/login");
+  // }
 
   const getCategories = async () => {
+    setCategoryLoading(true);
     const result = await fetch("http://localhost:4000/api/categories");
     const responseData = await result.json();
     const { data } = responseData;
     setCategories(data);
     console.log(data, "data");
     setCategories(data);
+    setCategoryLoading(false);
   };
 
+  useEffect(() => {
+    console.log("hello category =>", categories.length);
+  }, [categories]);
+
   const getFoods = async () => {
+    setFoodLoading(true);
     const result = await fetch("http://localhost:4000/api/foods");
     const responseData = await result.json();
     const { foods } = responseData;
     setFoods(foods);
     console.log(foods, "data");
     console.log(responseData);
+    setFoodLoading(false);
   };
   useEffect(() => {
     getCategories();
     getFoods();
   }, []);
 
-  const newCategoryNameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewCategory(e.target.value);
-  };
-
-  const createCategoryHandler = async () => {
-    await fetch("http://localhost:4000/api/categories", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ newCategory }),
-    });
-    setModalOpen(false);
-
-    await getCategories();
-    // setInputCategory("");
-  };
-
-  const deleteCategoryHandler = async (categoryId: string) => {
-    console.log("delete called");
-    await fetch("http://localhost:4000/api/categories/delete", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ categoryId }),
-    });
-    await getCategories();
-  };
-
-  const handleKeyboardEvent = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Enter") {
-      createCategoryHandler();
-    }
-  };
-
-  // export default function Home() {
   return (
     <div className="bg-secondary w-full h-full inter">
       <AdminLayout>
@@ -97,70 +56,22 @@ const Home = () => {
             <h4 className="text-5 leading-7 font-semibold mb-4">
               Dishes Category
             </h4>
-            <div className="flex gap-3 flex-wrap">
-              {categories.map((category, id) => (
-                <div
-                  key={id}
-                  className=" border-2 rounded-full w-fit px-4 py-1 flex items-center gap-3 text-[14px] leading-5 font-medium active:border-red-500"
-                >
-                  {category.name}
-                  <p className="py-[2px] px-[10px] rounded-full bg-black text-white">
-                    {foods.length}
-                  </p>
-                  <X
-                    className="hover:text-red-500 w-4 h-4"
-                    onClick={() => deleteCategoryHandler(category._id)}
+            {categoryLoading ? (
+              <div className="flex gap-3 flex-wrap">
+                {[1, 2, 3].map((c) => (
+                  <Skeleton
+                    key={c}
+                    className=" border-2 rounded-full w-25 h-7 px-4 py-1 flex items-center gap-3 "
                   />
-                </div>
-              ))}
-              {/* <AddCategoryDialogComp /> */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Badge
-                    variant={"outline"}
-                    className="py-2 px-4 rounded-full w-9 h-9 bg-[#EF4444] cursor-pointer"
-                  >
-                    {/* <Plus className="text-white h-4" /> */}
-                    <p className="text-[14px] leading-5 text-white">+</p>
-                  </Badge>
-                </DialogTrigger>
-                <DialogContent className="w-[460px] p-6">
-                  <DialogHeader>
-                    <DialogTitle className="text-[18px] leading-7 font-semibold mb-6">
-                      Add new category
-                    </DialogTitle>
-                    <Label className="mb-2 text-[14px] leading-[14px] font-medium">
-                      Category name
-                    </Label>
-                    <Input
-                      id="newCategory"
-                      name="newCategory"
-                      defaultValue={newCategory}
-                      type="text"
-                      placeholder="Type category name..."
-                      onKeyDown={handleKeyboardEvent}
-                      // onChange={categoryChangeHandler}
-                      // onChange={(e) => setNewCategory(e.target.value)}
-                      onChange={newCategoryNameChangeHandler}
-                    />
-                  </DialogHeader>
-                  <DialogFooter>
-                    {/* <DialogClose asChild>
-                <Button variant="secondary" className="rounded-full">
-                  <X />
-                </Button>
-              </DialogClose> */}
-                    <Button
-                      className="w-fit mt-6 leading-5"
-                      type="submit"
-                      onClick={createCategoryHandler}
-                    >
-                      Add category
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
+                ))}
+              </div>
+            ) : (
+              <Categories
+                categories={categories}
+                getCategories={getCategories}
+                foods={foods}
+              />
+            )}
           </div>
         </div>
         <div>
