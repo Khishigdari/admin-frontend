@@ -20,7 +20,9 @@ const Home = () => {
 
   const getCategories = async () => {
     setCategoryLoading(true);
-    const result = await fetch("http://localhost:4000/api/categories");
+    const result = await fetch(
+      "https://food-be-next.vercel.app/api/categories"
+    );
     const responseData = await result.json();
     const { data } = responseData;
     setCategories(data);
@@ -35,7 +37,7 @@ const Home = () => {
 
   const getFoods = async () => {
     setFoodLoading(true);
-    const result = await fetch("http://localhost:4000/api/foods");
+    const result = await fetch("https://food-be-next.vercel.app/api/foods");
     const responseData = await result.json();
     const { foods } = responseData;
     setFoods(foods);

@@ -51,10 +51,13 @@ export const AddDishComp = () => {
     form.append("category", category);
 
     try {
-      const response = await fetch("http://localhost:4000/api/foods", {
-        method: "POST",
-        body: form,
-      });
+      const response = await fetch(
+        "https://food-be-next.vercel.app/api/foods",
+        {
+          method: "POST",
+          body: form,
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {

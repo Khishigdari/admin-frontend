@@ -41,7 +41,7 @@ const EditDishDialog = () => {
   const [update, setUpdate] = useState<Foodtype | null>(null);
 
   const getFoods = async () => {
-    const result = await fetch("http://localhost:4000/api/foods");
+    const result = await fetch("https://food-be-next.vercel.app/foods");
     const responseData = await result.json();
     const { foods } = responseData;
     setFoods(foods);
@@ -94,7 +94,7 @@ const EditDishDialog = () => {
   }, []);
 
   const editFoods = async () => {
-    const result = await fetch("http://localhost:4000/api/foods", {
+    const result = await fetch("https://food-be-next.vercel.app/foods", {
       method: "PUT",
       // mode: "no-cors",
       headers: {
@@ -107,7 +107,7 @@ const EditDishDialog = () => {
   };
 
   const deleteFoodHandler = async (_id: Foodtype[]) => {
-    await fetch("http://localhost:4000/api/foods/delete", {
+    await fetch("https://food-be-next.vercel.app/foods/delete", {
       method: "POST",
       mode: "no-cors",
       headers: {
