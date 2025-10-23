@@ -31,7 +31,7 @@ const Categories = ({
   };
   const deleteCategoryHandler = async (categoryId: string) => {
     console.log("delete called");
-    await fetch("https://food-be-next.vercel.app/categories/delete", {
+    await fetch("https://food-be-next.vercel.app/api/categories/delete", {
       method: "POST",
       mode: "no-cors",
       headers: {
@@ -43,7 +43,7 @@ const Categories = ({
   };
 
   const createCategoryHandler = async () => {
-    await fetch("https://food-be-next.vercel.app/categories", {
+    await fetch("https://food-be-next.vercel.app/api/categories", {
       method: "POST",
       mode: "no-cors",
       headers: {

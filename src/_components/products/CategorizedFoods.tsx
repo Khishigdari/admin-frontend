@@ -6,9 +6,11 @@ import EditDishDialog from "./EditDishDialog";
 export const CategorizedFoods = ({
   foods,
   category,
+  categories,
   refetchFoods,
 }: {
   foods: Foodtype[];
+  categories: CategoryType[];
   category: CategoryType;
   refetchFoods: () => Promise<void>;
 }) => {
@@ -43,9 +45,9 @@ export const CategorizedFoods = ({
                 ""
               )}
               <EditDishDialog
-              // food={food}
-              // category={category}
-              // refetchFoods={refetchFoods}
+                food={food}
+                categories={categories}
+                refetchFoods={refetchFoods}
               />
             </div>
 

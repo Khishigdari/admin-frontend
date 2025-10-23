@@ -81,6 +81,7 @@ const Home = () => {
             return (
               <div key={category._id}>
                 <CategorizedFoods
+                  categories={categories}
                   refetchFoods={getFoods}
                   foods={foods.filter((food) => {
                     return food.categoryId._id == category._id;

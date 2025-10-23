@@ -22,107 +22,162 @@ import {
 } from "../ui/select";
 import { CategoryType, Foodtype } from "@/lib/types";
 
-// const EditDishDialog = ({
-//   food,
+const EditDishDialog = ({
+  food,
 
-//   category,
-//   refetchFoods,
-// }: {
-//   food: Foodtype;
+  categories,
+  refetchFoods,
+}: {
+  food: Foodtype;
 
-//   category: CategoryType[];
-//   refetchFoods: () => void;
-// }) => {
-const EditDishDialog = () => {
+  categories: CategoryType[];
+  refetchFoods: () => void;
+}) => {
+  // const EditDishDialog = () => {
   const [preview, setPreview] = useState<string>();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [category, setCategory] = useState<CategoryType[]>([]);
   const [foods, setFoods] = useState<Foodtype[]>([]);
   const [update, setUpdate] = useState<Foodtype | null>(null);
+  const [name, setName] = useState(food.name);
+  const [price, setPrice] = useState<number | string>(food.price);
+  const [ingredients, setIngredients] = useState(food.ingredients);
+  const [image, setImage] = useState<File | undefined | string>(food.image);
+  const [open, setOpen] = useState<boolean>(false);
 
   const getFoods = async () => {
-    const result = await fetch("https://food-be-next.vercel.app/foods");
+    const result = await fetch("https://food-be-next.vercel.app/api/foods");
     const responseData = await result.json();
     const { foods } = responseData;
     setFoods(foods);
     console.log(foods, "data");
     console.log(responseData);
-
-    // const form = new FormData();
-    // form.append("name", name);
-    // form.append("price", String(price));
-    // form.append("ingredients", ingredients);
-    // food._id ? form.append("foodId", food._id) : "";
-
-    // if (selectedCategory) {
-    //   form.append("categoryId", selectedCategory);
-    // } else {
-    //   alert("Please select a category!");
-    //   return;
-    // }
-
-    // if (image) {
-    //   form.append("image", image);
-    // }
-    // console.log({ name, ingredients, price, selectedCategory, image });
-    // try {
-    //   const res = await fetch("http://localhost:8000/api/food", {
-    //     method: "PUT",
-    //     body: form,
-    //   });
-
-    //   const data = await res.json();
-    //   console.log(data, "data");
-
-    //   if (res.ok) {
-    //     await refetchFoods();
-    //     setOpen(false);
-    //     setUpdate(null);
-    //     setImage(undefined);
-    //     console.log("Food updated successfully", data);
-    //   } else {
-    //     console.log("Update failed", data);
-    //     alert(data?.error ?? "Update failed");
-    //   }
-    // } catch (err) {
-    //   console.log("Error updating food", err);
-    //   alert("Error updating food");
-    // }
   };
+  // const editFoodHandler = async () => {
+  //   const form = new FormData();
+  //   form.append("name", name);
+  //   form.append("price", String(price));
+  //   form.append("ingredients", ingredients);
+  //   food._id ? form.append("foodId", food._id) : "";
+  //   if (selectedCategory) {
+  //     form.append("categoryId", selectedCategory);
+  //   } else {
+  //     alert("Please select a category!");
+  //     return;
+  //   }
+  //   if (image) {
+  //     form.append("image", image);
+  //   }
+  //   console.log({ name, ingredients, price, selectedCategory, image });
+  //   try {
+  //     // const res = await fetch("https://food-be-next.vercel.app/api/foods", {
+  //     //   method: "PUT",
+  //     //   body: form,
+  //     // });
+
+  //     const response = await fetch(
+  //       "https://food-be-next.vercel.app/api/foods",
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: form, // updatedFood → шинэчлэгдэх өгөгдөл
+  //       }
+  //     );
+
+  //     const data = await response.json();
+  //     console.log(data, "data");
+  //     if (response.ok) {
+  //       await refetchFoods();
+  //       setOpen(false);
+  //       setUpdate(null);
+  //       setImage(undefined);
+  //       console.log("Food updated successfully", data);
+  //     } else {
+  //       console.log("Update failed", data);
+  //       alert(data?.error ?? "Update failed");
+  //     }
+  //   } catch (err) {
+  //     console.log("Error updating food", err);
+  //     alert("Error updating food");
+  //   }
+  // };
+
+  const editFoodHandler = async () => {
+    if (!selectedCategory) {
+      alert("Please select a category!");
+      return;
+    }
+
+    const form = new FormData();
+    form.append("name", name);
+    form.append("price", String(price));
+    form.append("ingredients", ingredients);
+    form.append("categoryId", selectedCategory);
+    if (image) form.append("image", image);
+    if (food._id) form.append("foodId", food._id);
+
+    try {
+      const response = await fetch(
+        `https://food-be-next.vercel.app/api/foods`,
+        {
+          method: "PUT",
+          body: form,
+        }
+      );
+
+      const text = await response.text();
+      console.log("Server response:", text);
+
+      if (response.ok) {
+        await refetchFoods();
+        setOpen(false);
+        setImage(undefined);
+        console.log("Food updated successfully");
+      } else {
+        alert("Update failed: " + text);
+      }
+    } catch (err) {
+      console.error("Error updating food:", err);
+      alert("Error updating food");
+    }
+  };
+
   useEffect(() => {
     getFoods();
   }, []);
 
-  const editFoods = async () => {
-    const result = await fetch("https://food-be-next.vercel.app/foods", {
-      method: "PUT",
-      // mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ foods }),
-    });
-    console.log(foods, "selectedFood");
-    setFoods(foods);
-  };
+  // const editFoods = async () => {
+  //   const result = await fetch("https://food-be-next.vercel.app/api/foods", {
+  //     method: "PUT",
+  //     // mode: "no-cors",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ foods }),
+  //   });
+  //   console.log(foods, "selectedFood");
+  //   setFoods(foods);
+  // };
 
-  const deleteFoodHandler = async (_id: Foodtype[]) => {
-    await fetch("https://food-be-next.vercel.app/foods/delete", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ _id }),
-    });
-    await getFoods();
-  };
+  // const deleteFoodHandler = async (_id: Foodtype[]) => {
+  //   await fetch("https://food-be-next.vercel.app/api/foods/delete", {
+  //     method: "POST",
+  //     mode: "no-cors",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ _id }),
+  //   });
+  //   await getFoods();
+  // };
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            onClick={editFoods}
+            // onClick={editFoods}
             className="bg-white rounded-full absolute bottom-5 right-5"
           >
             <Pen className="text-red-500"></Pen>
@@ -244,6 +299,7 @@ const EditDishDialog = () => {
               <Button
                 className="btn btn-neutral mt-8 w-fit py-2 px-4 text-[14px] leading-5 font-medium rounded-[6px]"
                 // onClick={addFoodHandler}
+                onClick={editFoodHandler}
               >
                 Save changes
               </Button>
