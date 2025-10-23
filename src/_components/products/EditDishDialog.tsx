@@ -204,12 +204,12 @@ const EditDishDialog = ({
             />
           </div>
           {categories?.length > 0 && (
-            <div>
+            <div className="flex gap-4 items-start justify-between">
               <Label className=" text-xs text-muted-foreground leading-4 font-[400]">
                 Dish category
               </Label>
               <Select onValueChange={(value) => setSelectedCategory(value)}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-72">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
