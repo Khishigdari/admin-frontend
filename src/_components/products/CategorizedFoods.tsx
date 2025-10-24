@@ -45,6 +45,7 @@ export const CategorizedFoods = ({
                 ""
               )}
               <EditDishDialog
+                category={category}
                 food={food}
                 categories={categories}
                 refetchFoods={refetchFoods}

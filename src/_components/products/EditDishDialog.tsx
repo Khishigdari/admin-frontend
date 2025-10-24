@@ -24,23 +24,27 @@ import { CategoryType, Foodtype } from "@/lib/types";
 
 const EditDishDialog = ({
   food,
+  category,
   categories,
   refetchFoods,
 }: {
   food: Foodtype;
+  category: CategoryType;
   categories: CategoryType[];
   refetchFoods: () => void;
 }) => {
   // const EditDishDialog = () => {
   const [preview, setPreview] = useState<string>(food.image);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    category._id
+  );
   // const [category, setCategory] = useState<CategoryType[]>([]);
   const [foods, setFoods] = useState<Foodtype[]>([]);
   // const [update, setUpdate] = useState<Foodtype | null>(null);
   const [name, setName] = useState(food.name);
   const [price, setPrice] = useState<number | string>(food.price);
   const [ingredients, setIngredients] = useState(food.ingredients);
-  const [image, setImage] = useState<File | undefined | string>();
+  const [image, setImage] = useState<File | undefined | string>(preview);
   const [open, setOpen] = useState<boolean>(false);
 
   const getFoods = async () => {
@@ -63,8 +67,8 @@ const EditDishDialog = ({
       console.log(preview);
     }
   };
-  console.log({ image });
-  console.log({ preview });
+  // console.log({ image });
+  // console.log({ preview });
 
   const editFoodHandler = async () => {
     if (!selectedCategory) {
@@ -95,6 +99,8 @@ const EditDishDialog = ({
           body: form,
         }
       );
+      refetchFoods();
+      setOpen(false);
       // const result = await response.json();
       // console.log(result, "result");
       // const text = await response.text();
@@ -158,14 +164,17 @@ const EditDishDialog = ({
               <Label className=" text-xs text-muted-foreground leading-4 font-[400]">
                 Dish category
               </Label>
-              <Select onValueChange={(value) => setSelectedCategory(value)}>
+              <Select
+                onValueChange={(value) => setSelectedCategory(value)}
+                defaultValue={selectedCategory}
+              >
                 <SelectTrigger className="w-72">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => {
                     return (
-                      <SelectItem key={category._id} value={category.name}>
+                      <SelectItem key={category._id} value={category._id}>
                         {category.name}
                       </SelectItem>
                     );

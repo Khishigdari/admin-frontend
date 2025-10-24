@@ -29,18 +29,6 @@ const Categories = ({
   const newCategoryNameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewCategory(e.target.value);
   };
-  const deleteCategoryHandler = async (categoryId: string) => {
-    console.log("delete called");
-    await fetch("https://food-be-next.vercel.app/api/categories/delete", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ categoryId }),
-    });
-    await getCategories();
-  };
 
   const createCategoryHandler = async () => {
     await fetch("https://food-be-next.vercel.app/api/categories", {
@@ -57,6 +45,19 @@ const Categories = ({
     // setInputCategory("");
   };
 
+  const deleteCategoryHandler = async (categoryId: string) => {
+    console.log("delete called");
+    await fetch("https://food-be-next.vercel.app/api/categories/delete", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ categoryId }),
+    });
+    await getCategories();
+  };
+
   const handleKeyboardEvent = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
@@ -66,9 +67,9 @@ const Categories = ({
   };
   return (
     <div className="flex gap-3 flex-wrap">
-      {categories.map((category, id) => (
+      {categories.map((category) => (
         <div
-          key={id}
+          key={category._id}
           className=" border-2 rounded-full w-fit px-4 py-1 flex items-center gap-3 text-[14px] leading-5 font-medium active:border-red-500"
         >
           {category.name}
@@ -82,7 +83,7 @@ const Categories = ({
         </div>
       ))}
       {/* <AddCategoryDialogComp /> */}
-      <Dialog>
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogTrigger asChild>
           <Badge
             variant={"outline"}
