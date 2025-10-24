@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Pen, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -24,25 +24,23 @@ import { CategoryType, Foodtype } from "@/lib/types";
 
 const EditDishDialog = ({
   food,
-
   categories,
   refetchFoods,
 }: {
   food: Foodtype;
-
   categories: CategoryType[];
   refetchFoods: () => void;
 }) => {
   // const EditDishDialog = () => {
-  const [preview, setPreview] = useState<string>();
+  const [preview, setPreview] = useState<string>(food.image);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [category, setCategory] = useState<CategoryType[]>([]);
+  // const [category, setCategory] = useState<CategoryType[]>([]);
   const [foods, setFoods] = useState<Foodtype[]>([]);
-  const [update, setUpdate] = useState<Foodtype | null>(null);
+  // const [update, setUpdate] = useState<Foodtype | null>(null);
   const [name, setName] = useState(food.name);
   const [price, setPrice] = useState<number | string>(food.price);
   const [ingredients, setIngredients] = useState(food.ingredients);
-  const [image, setImage] = useState<File | undefined | string>(food.image);
+  const [image, setImage] = useState<File | undefined | string>();
   const [open, setOpen] = useState<boolean>(false);
 
   const getFoods = async () => {
@@ -53,56 +51,20 @@ const EditDishDialog = ({
     console.log(foods, "data");
     console.log(responseData);
   };
-  // const editFoodHandler = async () => {
-  //   const form = new FormData();
-  //   form.append("name", name);
-  //   form.append("price", String(price));
-  //   form.append("ingredients", ingredients);
-  //   food._id ? form.append("foodId", food._id) : "";
-  //   if (selectedCategory) {
-  //     form.append("categoryId", selectedCategory);
-  //   } else {
-  //     alert("Please select a category!");
-  //     return;
-  //   }
-  //   if (image) {
-  //     form.append("image", image);
-  //   }
-  //   console.log({ name, ingredients, price, selectedCategory, image });
-  //   try {
-  //     // const res = await fetch("https://food-be-next.vercel.app/api/foods", {
-  //     //   method: "PUT",
-  //     //   body: form,
-  //     // });
-
-  //     const response = await fetch(
-  //       "https://food-be-next.vercel.app/api/foods",
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: form, // updatedFood → шинэчлэгдэх өгөгдөл
-  //       }
-  //     );
-
-  //     const data = await response.json();
-  //     console.log(data, "data");
-  //     if (response.ok) {
-  //       await refetchFoods();
-  //       setOpen(false);
-  //       setUpdate(null);
-  //       setImage(undefined);
-  //       console.log("Food updated successfully", data);
-  //     } else {
-  //       console.log("Update failed", data);
-  //       alert(data?.error ?? "Update failed");
-  //     }
-  //   } catch (err) {
-  //     console.log("Error updating food", err);
-  //     alert("Error updating food");
-  //   }
-  // };
+  useEffect(() => {
+    getFoods();
+  }, []);
+  const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("daragdlaa");
+    if (e.target.files) {
+      setImage(e.target.files[0]);
+      const filePreview = URL.createObjectURL(e.target.files[0]);
+      setPreview(filePreview);
+      console.log(preview);
+    }
+  };
+  console.log({ image });
+  console.log({ preview });
 
   const editFoodHandler = async () => {
     if (!selectedCategory) {
@@ -115,66 +77,54 @@ const EditDishDialog = ({
     form.append("price", String(price));
     form.append("ingredients", ingredients);
     form.append("categoryId", selectedCategory);
-    if (image) form.append("image", image);
+    if (preview !== food.image && image) {
+      form.append("image", image);
+    } else {
+      form.append("image", food.image);
+    }
+    // if (image) form.append("image", image);
     if (food._id) form.append("foodId", food._id);
 
     try {
       const response = await fetch(
-        `https://food-be-next.vercel.app/api/foods`,
+        "https://food-be-next.vercel.app/api/foods/edit",
         {
-          method: "PUT",
+          // http://localhost:4000/api/foods/edit
+          method: "POST",
+          // mode: "no-cors",
           body: form,
         }
       );
+      // const result = await response.json();
+      // console.log(result, "result");
+      // const text = await response.text();
+      // console.log("Server response:", text);
 
-      const text = await response.text();
-      console.log("Server response:", text);
-
-      if (response.ok) {
-        await refetchFoods();
-        setOpen(false);
-        setImage(undefined);
-        console.log("Food updated successfully");
-      } else {
-        alert("Update failed: " + text);
-      }
+      // if (response.ok) {
+      //   await refetchFoods();
+      //   setOpen(false);
+      //   setImage(undefined);
+      //   console.log("Food updated successfully");
+      // } else {
+      //   alert("Update failed: " + text);
+      // }
     } catch (err) {
       console.error("Error updating food:", err);
-      alert("Error updating food");
     }
   };
-
-  useEffect(() => {
-    getFoods();
-  }, []);
-
-  // const editFoods = async () => {
-  //   const result = await fetch("https://food-be-next.vercel.app/api/foods", {
-  //     method: "PUT",
-  //     // mode: "no-cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ foods }),
-  //   });
-  //   console.log(foods, "selectedFood");
-  //   setFoods(foods);
-  // };
 
   // const deleteFoodHandler = async (_id: Foodtype[]) => {
   //   await fetch("https://food-be-next.vercel.app/api/foods/delete", {
   //     method: "POST",
   //     mode: "no-cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
+
   //     body: JSON.stringify({ _id }),
   //   });
   //   await getFoods();
   // };
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
             // onClick={editFoods}
@@ -197,8 +147,8 @@ const EditDishDialog = ({
             <Input
               id="name"
               name="name"
-              // defaultValue={name}
-              // onChange={nameChangeHandler}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="input border border-[#E4E4E7] w-72 rounded-[6px] justify-end"
               placeholder="Type food name"
             />
@@ -215,7 +165,7 @@ const EditDishDialog = ({
                 <SelectContent>
                   {categories.map((category) => {
                     return (
-                      <SelectItem key={category._id} value={category._id}>
+                      <SelectItem key={category._id} value={category.name}>
                         {category.name}
                       </SelectItem>
                     );
@@ -232,8 +182,8 @@ const EditDishDialog = ({
               id="price"
               name="price"
               type="number"
-              defaultValue={""}
-              // onChange={priceChangeHandler}
+              defaultValue={price}
+              onChange={(e) => setPrice(e.target.value)}
               className="input border border-[#E4E4E7] w-72 rounded-[6px]"
               placeholder="Enter price..."
             />
@@ -246,10 +196,10 @@ const EditDishDialog = ({
             <Textarea
               id="ingredients"
               name="ingredients"
-              // defaultValue={ingredients}
+              defaultValue={ingredients}
               className="textarea border border-[#E4E4E7] w-72 rounded-[6px]"
               placeholder="List ingredients..."
-              // onChange={ingredientsChangeHandler}
+              onChange={(e) => setIngredients(e.target.value)}
             />
           </div>
           <div className="flex gap-4 items-start  justify-between">
@@ -273,7 +223,7 @@ const EditDishDialog = ({
               <Input
                 id="picture"
                 type="file"
-                // onChange={fileChangeHandler}
+                onChange={fileChangeHandler}
                 className="opacity-0 w-72"
               />
               <img src="./image.svg" />
@@ -287,10 +237,11 @@ const EditDishDialog = ({
               <Button
                 className="border border-red-500 mt-8 py2 px-4"
                 variant={"outline"}
+                // onClick={() => deleteFoodHandler(_id)}
               >
                 <Trash
                   className="text-red-500 w-3 h-[13px]"
-                  //   onClick={() => deleteFoodHandler(foods._id)}
+                  // onClick={() => deleteFoodHandler}
                 ></Trash>
               </Button>
             </div>
@@ -298,7 +249,6 @@ const EditDishDialog = ({
             <div className="flex justify-end">
               <Button
                 className="btn btn-neutral mt-8 w-fit py-2 px-4 text-[14px] leading-5 font-medium rounded-[6px]"
-                // onClick={addFoodHandler}
                 onClick={editFoodHandler}
               >
                 Save changes
