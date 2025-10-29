@@ -33,14 +33,11 @@ const EditDishDialog = ({
   categories: CategoryType[];
   refetchFoods: () => void;
 }) => {
-  // const EditDishDialog = () => {
   const [preview, setPreview] = useState<string>(food.image);
   const [selectedCategory, setSelectedCategory] = useState<string>(
     category._id
   );
-  // const [category, setCategory] = useState<CategoryType[]>([]);
   const [foods, setFoods] = useState<Foodtype[]>([]);
-  // const [update, setUpdate] = useState<Foodtype | null>(null);
   const [name, setName] = useState(food.name);
   const [price, setPrice] = useState<number | string>(food.price);
   const [ingredients, setIngredients] = useState(food.ingredients);
@@ -67,8 +64,6 @@ const EditDishDialog = ({
       console.log(preview);
     }
   };
-  // console.log({ image });
-  // console.log({ preview });
 
   const editFoodHandler = async () => {
     if (!selectedCategory) {
@@ -86,7 +81,6 @@ const EditDishDialog = ({
     } else {
       form.append("image", food.image);
     }
-    // if (image) form.append("image", image);
     if (food._id) form.append("foodId", food._id);
 
     try {
@@ -95,47 +89,33 @@ const EditDishDialog = ({
         {
           // http://localhost:4000/api/foods/edit
           method: "POST",
-          // mode: "no-cors",
           body: form,
         }
       );
       refetchFoods();
       setOpen(false);
-      // const result = await response.json();
-      // console.log(result, "result");
-      // const text = await response.text();
-      // console.log("Server response:", text);
-
-      // if (response.ok) {
-      //   await refetchFoods();
-      //   setOpen(false);
-      //   setImage(undefined);
-      //   console.log("Food updated successfully");
-      // } else {
-      //   alert("Update failed: " + text);
-      // }
     } catch (err) {
       console.error("Error updating food:", err);
     }
   };
 
-  // const deleteFoodHandler = async (_id: Foodtype[]) => {
-  //   await fetch("https://food-be-next.vercel.app/api/foods/delete", {
-  //     method: "POST",
-  //     mode: "no-cors",
-
-  //     body: JSON.stringify({ _id }),
-  //   });
-  //   await getFoods();
-  // };
+  const deleteFoodHandler = async (_id: string) => {
+    await fetch("https://food-be-next.vercel.app/api/foods/delete", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id }),
+    });
+    refetchFoods();
+    setOpen(false);
+  };
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            // onClick={editFoods}
-            className="bg-white rounded-full absolute bottom-5 right-5"
-          >
+          <Button className="bg-white rounded-full absolute bottom-5 right-5">
             <Pen className="text-red-500"></Pen>
           </Button>
         </DialogTrigger>
@@ -145,7 +125,6 @@ const EditDishDialog = ({
               Dishes info
             </DialogTitle>
           </DialogHeader>
-          {/* <div className=" gap-6 flex"> */}
           <div className="flex gap-4 items-start  justify-between">
             <Label className=" text-xs text-muted-foreground leading-4 font-[400]">
               Dish name
@@ -197,7 +176,6 @@ const EditDishDialog = ({
               placeholder="Enter price..."
             />
           </div>
-          {/* </div> */}
           <div className="flex gap-4 items-star  justify-between">
             <Label className=" text-xs text-muted-foreground leading-4 font-[400]">
               Ingredients
@@ -246,12 +224,9 @@ const EditDishDialog = ({
               <Button
                 className="border border-red-500 mt-8 py2 px-4"
                 variant={"outline"}
-                // onClick={() => deleteFoodHandler(_id)}
+                onClick={() => deleteFoodHandler(food._id)}
               >
-                <Trash
-                  className="text-red-500 w-3 h-[13px]"
-                  // onClick={() => deleteFoodHandler}
-                ></Trash>
+                <Trash className="text-red-500 w-3 h-[13px]"></Trash>
               </Button>
             </div>
 
