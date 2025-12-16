@@ -77,7 +77,31 @@ const Home = () => {
           </div>
         </div>
         <div>
-          {categories.map((category) => {
+          {foodLoading ? (
+            <div className="flex flex-col gap-5">
+              {[1, 2].map((c) => (
+                <Skeleton key={c} className="bg-white rounded-lg w-293 h-80" />
+              ))}
+            </div>
+          ) : (
+            categories.map((category) => {
+              return (
+                <div key={category._id}>
+                  <CategorizedFoods
+                    categories={categories}
+                    refetchFoods={getFoods}
+                    foods={foods.filter((food) => {
+                      return food.categoryId._id == category._id;
+
+                      // return true;
+                    })}
+                    category={category}
+                  />
+                </div>
+              );
+            })
+          )}
+          {/* {categories.map((category) => {
             return (
               <div key={category._id}>
                 <CategorizedFoods
@@ -92,7 +116,7 @@ const Home = () => {
                 />
               </div>
             );
-          })}
+          })} */}
         </div>
       </AdminLayout>
     </div>

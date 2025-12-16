@@ -73,9 +73,9 @@ const Categories = ({
           className=" border-2 rounded-full w-fit px-4 py-1 flex items-center gap-3 text-[14px] leading-5 font-medium active:border-red-500"
         >
           {category.name}
-          <p className="py-[2px] px-[10px] rounded-full bg-black text-white">
+          {/* <p className="py-[2px] px-[10px] rounded-full bg-black text-white">
             {foods.length}
-          </p>
+          </p> */}
           <X
             className="hover:text-red-500 w-4 h-4"
             onClick={() => deleteCategoryHandler(category._id)}
