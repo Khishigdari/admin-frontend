@@ -98,7 +98,7 @@ const Categories = ({
             <DialogTitle className="text-[18px] leading-7 font-semibold mb-6">
               Add new category
             </DialogTitle>
-            <Label className="mb-2 text-[14px] leading-[14px] font-medium">
+            <Label className="mb-2 text-[14px] leading-3.5 font-medium">
               Category name
             </Label>
             <Input

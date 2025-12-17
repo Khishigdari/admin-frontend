@@ -103,7 +103,7 @@ export const AddDishComp = ({
               >
                 +
               </p>
-              <p className="text-[#18181B] text-[14px] leading-5 font-[500]">
+              <p className="text-[#18181B] text-[14px] leading-5 font-medium">
                 Add new Dish to {category.name}
               </p>
             </Button>
@@ -111,13 +111,13 @@ export const AddDishComp = ({
         </DialogTrigger>
         <DialogContent className="sm:max-w-[460px]">
           <DialogHeader>
-            <DialogTitle className="mb-5 text-[18px] leading-7 font-[600]">
+            <DialogTitle className="mb-5 text-[18px] leading-7 font-semibold">
               Add new Dish to Appetizers
             </DialogTitle>
           </DialogHeader>
           <div className=" gap-6 flex">
             <div className="grid gap-3">
-              <Label className=" text-[14px] leading-[14px] font-[500]">
+              <Label className=" text-[14px] leading-3.5 font-medium">
                 Food name
               </Label>
               <Input
@@ -129,7 +129,7 @@ export const AddDishComp = ({
               />
             </div>
             <div className="grid gap-3">
-              <Label className=" text-[14px] leading-[14px] font-[500]">
+              <Label className=" text-[14px] leading-3.5 font-medium">
                 Food price
               </Label>
               <Input
@@ -143,7 +143,7 @@ export const AddDishComp = ({
             </div>
           </div>
           <div className="grid gap-3">
-            <Label className=" text-[14px] leading-[14px] font-[500]">
+            <Label className=" text-[14px] leading-3.5 font-medium">
               Ingredients
             </Label>
             <Textarea
@@ -156,7 +156,7 @@ export const AddDishComp = ({
             />
           </div>
           <div className="grid gap-3">
-            <legend className=" text-[14px] leading-[14px] font-[500]">
+            <legend className=" text-[14px] leading-3.5 font-medium">
               Food image
             </legend>
             <div className="border border-dashed border-[#2563EB33] bg-[#2563EB0D] pb-[39px] rounded-[6px] flex flex-col items-center justify-center relative gap-2">
